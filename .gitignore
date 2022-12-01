@@ -8,7 +8,7 @@ Variables
 # If you're building an application, you may want to check-in your pubspec.lock
 pubspec.lock
 
-# Directory created by dartdoc
+# Directory created by dartdocZ
 # If you don't generate documentation locally you can remove this line.
 doc/api/
 
@@ -20,3 +20,4 @@ doc/api/
 *.js_
 *.js.deps
 *.js.map
+Flutter Lab_Manual.pdf

@@ -1,7 +1,6 @@
 /* Write a dart codeto accept n numbers in an array. Display the sum of all the numbers which are divisible by either 3 or 5. */
 
 import 'dart:io';
-import 'dart:math';
 
 class Count {
   int sum = 0;

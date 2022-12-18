@@ -1,0 +1,1 @@
+/* Write a dart codeto count the numberof even or odd numbersfrom an array of n numbers. */

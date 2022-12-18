@@ -1,0 +1,1 @@
+/* Write a dart codeto accept n numbers in an array. Display the sum of all the numbers which are divisible by either 3 or 5. */

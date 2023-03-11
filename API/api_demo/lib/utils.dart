@@ -1,11 +1,13 @@
 // Replace Your Url
-var url = "";
+var url = "API URL END POINT";
+Map<String, String> Headers = {"Content-Type": "application/json"};
 Uri APIURL = Uri.parse(url);
 
 
 
 // Smaple Data of one of My Json Data
 
+// Replace Your Json Schema Accouding Model class And Othe Filed
 /* 
 
 [

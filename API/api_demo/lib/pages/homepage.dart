@@ -1,3 +1,6 @@
+import 'package:api_demo/model/student.dart';
+import 'package:api_demo/pages/studentpage.dart';
+import 'package:api_demo/services/remoteservices.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -10,7 +13,6 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 
@@ -22,24 +24,60 @@ class _HomePageState extends State<HomePage> {
       ),
       body: FutureBuilder(
         builder: (context, snapshot) {
-          if (!snapshot.hasData || snapshot.hasError) {
-            return const CircularProgressIndicator.adaptive(
-              semanticsLabel: "Loading Data",
+          if (!snapshot.hasData) {
+            return const Center(
+              child: CircularProgressIndicator.adaptive(
+                semanticsLabel: "Loading Data",
+              ),
             );
           } else {
             return ListView.builder(
+              scrollDirection: Axis.vertical,
+              itemCount: snapshot.data!.length,
               itemBuilder: (context, index) {
                 return ListTile(
-                  title: Text("hello"),
+                  leading: CircleAvatar(
+                    backgroundImage: NetworkImage(snapshot.data![index].avatar),
+                  ),
+                  title: Text(snapshot.data![index].name),
+                  trailing: IconButton(
+                    onPressed: () {
+                      RemoteServices.deleteStudent(
+                          id: snapshot.data![index].id);
+                      setState(() {});
+                    },
+                    icon: const Icon(Icons.delete),
+                  ),
+                  subtitle: Text("Email : ${snapshot.data![index].email}"),
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => StudentPage(
+                        isedit: true,
+                        obj: snapshot.data![index],
+                      ),
+                    ),
+                  ),
                 );
               },
             );
           }
         },
+        future: RemoteServices.getAllStudent(),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        child: const Icon(Icons.add),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const StudentPage(isedit: false),
+            ),
+          );
+        },
+        child: const Icon(
+          Icons.add,
+        ),
       ),
     );
   }

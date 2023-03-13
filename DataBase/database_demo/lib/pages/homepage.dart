@@ -40,6 +40,11 @@ class _HomePageState extends State<HomePage> {
         },
         future: DataBaseHelper.instance.getAllStudents(),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: const Icon(Icons.add),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }

@@ -111,7 +111,7 @@ class _StudentPageState extends State<StudentPage> {
                   onPressed: () async {
                     Map<String, dynamic> map = {
                       "name": nameController.text,
-                      "id": idController.text,
+                      "id": int.parse(idController.text),
                       "rollnumber": int.parse(rollNumberController.text),
                       "email": emailController.text,
                       "address": addressController.text,

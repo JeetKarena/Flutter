@@ -64,4 +64,36 @@ class DataBaseHelper {
     var res = await db.rawQuery("select * from student");
     return res;
   }
+
+  Future<int> insertStudent({required Map<String, dynamic> obj}) async {
+    Database db = await instance.dataBase;
+    // var res = await db.rawInsert(
+    //     '''insert into student values(id=?,name=?,email=?,rollnumber=?,address=?)''',
+    //     [
+    //       obj["id"],
+    //       obj["name"],
+    //       obj["email"],
+    //       obj["rollnumber"],
+    //       obj["address"]
+    //     ]);
+    var r = await db.insert("student", obj);
+    return r;
+  }
+
+  Future<int> updateStudent({required Map<String, dynamic> obj}) async {
+    Database db = await instance.dataBase;
+    // var res = await db.rawUpdate(
+    //   '''update student set name=?,email=?,rollnumber=?,address=? where name =?''',
+    //   [obj["name"], obj["email"], obj["rollnumber"], obj["address"]],
+    // );
+    var r =
+        await db.update("student", obj, where: "id=?", whereArgs: [obj["id"]]);
+    return r;
+  }
+
+  Future<int> deleteStudent({required id}) async {
+    var db = await instance.dataBase;
+    var res = await db.rawDelete("Delete from student where id = ?", id);
+    return res;
+  }
 }

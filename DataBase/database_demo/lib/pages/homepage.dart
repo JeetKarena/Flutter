@@ -1,7 +1,6 @@
 import 'package:database_demo/db/db_helper.dart';
+import 'package:database_demo/pages/studentpage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -26,12 +25,25 @@ class _HomePageState extends State<HomePage> {
               itemCount: snapshot.data?.length,
               itemBuilder: (context, index) {
                 return ListTile(
+                  onTap: () {
+                    print(snapshot.data![index]["id"].toString());
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => StudentPage(
+                              isedit: true, obj: snapshot.data![index]),
+                        ));
+                  },
                   leading: const CircleAvatar(),
                   title: Text(
                     snapshot.data![index]["name"],
                   ),
                   subtitle: Text(
                     snapshot.data![index]["email"],
+                  ),
+                  trailing: IconButton(
+                    onPressed: () {},
+                    icon: const Icon(Icons.delete),
                   ),
                 );
               },
@@ -41,7 +53,13 @@ class _HomePageState extends State<HomePage> {
         future: DataBaseHelper.instance.getAllStudents(),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => StudentPage(isedit: false),
+              ));
+        },
         child: const Icon(Icons.add),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,

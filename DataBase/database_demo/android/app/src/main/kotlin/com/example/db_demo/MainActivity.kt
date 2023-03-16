@@ -1,4 +1,4 @@
-package com.example.database_demo
+package com.example.db_demo
 
 import io.flutter.embedding.android.FlutterActivity
 

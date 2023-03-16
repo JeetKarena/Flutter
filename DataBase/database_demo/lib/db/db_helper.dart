@@ -6,50 +6,30 @@ import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
-/* 
-    For Access Database in same file we Use
-    var db = instance.dataBase;
-    
-    For Access Database in outer files we Use
-    var db = DatabaseHelper.instance;
-
- */
-
 class DataBaseHelper {
-  // database Veraible For getter
-  static var _dataBase;
+  static var _database;
 
-  // _private Constructor For Mantaining single instance All Over Program
-  DataBaseHelper._privateConstructor();
-  static final DataBaseHelper instance = DataBaseHelper._privateConstructor();
-
-  Future<Database> get dataBase async {
-    if (_dataBase != null) {
-      return _dataBase;
+  Future<Database> getdatabase() async {
+    if (_database != null) {
+      return _database;
     }
-    // Call Only First Time When App runes
-    // and then comment down it => copyPasteAssetFileToRoot();
+    log("Database is loading");
     await copyPasteAssetFileToRoot();
-    _dataBase = await _initDatabase();
-    return _dataBase;
+    _database = await _initDatabase();
+    return _database;
   }
 
   Future<Database> _initDatabase() async {
     Directory appDocDir = await getApplicationDocumentsDirectory();
-    // Replcae Your Database Name Here
     String databasePath = join(appDocDir.path, 'temp.db');
-    log("Database is init.");
-    return await openDatabase(databasePath, version: 1);
+    return await openDatabase(databasePath);
   }
 
   Future<bool> copyPasteAssetFileToRoot() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
-    log("Assets Db is Copying");
-    // Replcae Your Database Name Here
     String path = join(documentsDirectory.path, "temp.db");
 
     if (FileSystemEntity.typeSync(path) == FileSystemEntityType.notFound) {
-      // Replcae Your Database File Name Insted Of temp.db
       ByteData data = await rootBundle.load(join('assets/database', 'temp.db'));
       List<int> bytes =
           data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
@@ -59,41 +39,28 @@ class DataBaseHelper {
     return false;
   }
 
-  Future<List<Map<String, dynamic>>> getAllStudents() async {
-    Database db = await instance.dataBase;
-    var res = await db.rawQuery("select * from student");
+  Future<List<Map<String, dynamic>>> getallStudent() async {
+    var db = await DataBaseHelper().getdatabase();
+    var res = await db.query("student");
     return res;
   }
 
-  Future<int> insertStudent({required Map<String, dynamic> obj}) async {
-    Database db = await instance.dataBase;
-    // var res = await db.rawInsert(
-    //     '''insert into student values(id=?,name=?,email=?,rollnumber=?,address=?)''',
-    //     [
-    //       obj["id"],
-    //       obj["name"],
-    //       obj["email"],
-    //       obj["rollnumber"],
-    //       obj["address"]
-    //     ]);
-    var r = await db.insert("student", obj);
-    return r;
+  Future<int> insertstudent({required obj}) async {
+    var db = await DataBaseHelper().getdatabase();
+    var res = await db.insert("student", obj);
+    return res;
   }
 
-  Future<int> updateStudent({required Map<String, dynamic> obj}) async {
-    Database db = await instance.dataBase;
-    // var res = await db.rawUpdate(
-    //   '''update student set name=?,email=?,rollnumber=?,address=? where name =?''',
-    //   [obj["name"], obj["email"], obj["rollnumber"], obj["address"]],
-    // );
-    var r =
+  Future<int> updateStudent({required obj}) async {
+    var db = await DataBaseHelper().getdatabase();
+    var res =
         await db.update("student", obj, where: "id=?", whereArgs: [obj["id"]]);
-    return r;
+    return res;
   }
 
   Future<int> deleteStudent({required id}) async {
-    var db = await instance.dataBase;
-    var res = await db.rawDelete("Delete from student where id = ?", id);
+    var db = await DataBaseHelper().getdatabase();
+    var res = await db.delete("student", where: "id=?", whereArgs: [id]);
     return res;
   }
 }
